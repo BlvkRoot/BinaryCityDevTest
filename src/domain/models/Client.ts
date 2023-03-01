@@ -1,5 +1,5 @@
 import { ClientDTO } from "@appication/dtos/ClientDTO";
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
 const clientSchema = new Schema<ClientDTO>({
   name: {
@@ -11,6 +11,10 @@ const clientSchema = new Schema<ClientDTO>({
     require: true,
     unique: true
   },
+  contacts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Contact',
+  }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

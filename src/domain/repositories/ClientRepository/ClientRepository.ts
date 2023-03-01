@@ -4,8 +4,6 @@ import { IClientRepository } from "./IClientRepository";
 
 export class ClientRepository implements IClientRepository {
   public async save(clientData: ClientDTO): Promise<void> {
-    const clientCode = this.generateClientCode(clientData.name);
-
     const client = new ClientModel(clientData);
     await client.save();
   }
