@@ -72,4 +72,8 @@ export class ClientRepository implements IClientRepository {
   public getClientById(clientId: ObjectId): Promise<ClientDTO | null> {
     return ClientModel.findOne({ _id: clientId });
   }
+
+  public list(start: number, end: number): Promise<ClientDTO[] | null> {
+    return ClientModel.find({ }).skip(start).limit(end);
+  }
 }

@@ -16,4 +16,8 @@ export class ContactRepository implements IContactRepository {
   public findContactByEmail(email: string): Promise<ContactDTO | null> {
     return ContactModel.findOne({ email });
   }
+
+  public list(start: number, end: number): Promise<ContactDTO[] | null> {
+    return ContactModel.find({ }).skip(start).limit(end);
+  }
 }

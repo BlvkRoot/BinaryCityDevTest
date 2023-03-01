@@ -6,4 +6,5 @@ export interface IClientRepository {
   getLastClientCode(): Promise<ClientDTO | null>;
   generateClientCode(clientName: string): Promise<string>;
   getClientById(clientId: ObjectId): Promise<ClientDTO | null>;
+  list(start: number, end: number): Promise<ClientDTO[] | null>;
 }
