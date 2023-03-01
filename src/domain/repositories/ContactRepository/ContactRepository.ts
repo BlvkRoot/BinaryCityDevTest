@@ -12,4 +12,8 @@ export class ContactRepository implements IContactRepository {
   public getContactById(contactId: ObjectId): Promise<ContactDTO | null> {
     return ContactModel.findOne({ _id: contactId });
   }
+
+  public findContactByEmail(email: string): Promise<ContactDTO | null> {
+    return ContactModel.findOne({ email });
+  }
 }
