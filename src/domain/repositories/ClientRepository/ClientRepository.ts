@@ -1,5 +1,6 @@
 import { ClientDTO } from "@appication/dtos/ClientDTO";
 import { ClientModel } from "@domain/models/Client";
+import { ObjectId } from "mongoose";
 import { IClientRepository } from "./IClientRepository";
 
 export class ClientRepository implements IClientRepository {
@@ -66,5 +67,9 @@ export class ClientRepository implements IClientRepository {
 
     // Case when name already contains only 3 characters
     return clientName;
+  }
+
+  public getClientById(clientId: ObjectId): Promise<ClientDTO | null> {
+    return ClientModel.findOne({ _id: clientId });
   }
 }

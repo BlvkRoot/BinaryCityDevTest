@@ -3,7 +3,8 @@ import { ContactDTO } from "./ContactDTO";
 export interface ClientDTO {
   name: string;
   clientCode: string;
-  contacts?: ContactDTO[];
+  contactIds: string[];
+  contacts?: ContactDTO[] | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
