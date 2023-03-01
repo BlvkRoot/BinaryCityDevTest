@@ -22,50 +22,55 @@ function Contact() {
         navigate("/contacts");
       }
     },
+    onError: async ({ response: { data: { errors } } }) => {
+      errors?.forEach(error => notify(error));
+    },
   });
 
   return (
-    <Form onSubmit={(e) => e.preventDefault()}>
-      <h1>Contact Form</h1>
-      <TextField
-        id="standard-basic"
-        label="Name"
-        variant="outlined"
-        required={true}
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Surname"
-        variant="outlined"
-        required={true}
-        onChange={(e) => setSurname(e.target.value)}
-        value={surname}
-      />
+    <>
+      <Form onSubmit={(e) => e.preventDefault()}>
+        <h1>Contact Form</h1>
+        <TextField
+          id="standard-basic"
+          label="Name"
+          variant="outlined"
+          required={true}
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Surname"
+          variant="outlined"
+          required={true}
+          onChange={(e) => setSurname(e.target.value)}
+          value={surname}
+        />
 
-      <TextField
-        id="outlined-basic"
-        label="Email"
-        variant="outlined"
-        required={true}
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        type="email"
-      />
-      <Button
-        onClick={() => {
-          mutate({
-            name,
-            surname,
-            email,
-            clientIds,
-          });
-        }}
-      >
-        Save
-      </Button>
-    </Form>
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+          required={true}
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          type="email"
+        />
+        <Button
+          onClick={() => {
+            mutate({
+              name,
+              surname,
+              email,
+              clientIds,
+            });
+          }}
+        >
+          Save
+        </Button>
+      </Form>
+    </>
   );
 }
 

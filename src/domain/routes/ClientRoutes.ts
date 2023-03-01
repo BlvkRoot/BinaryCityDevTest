@@ -2,13 +2,14 @@ import { CreateClientController } from "@appication/controllers/ClientController
 import { GenerateClientCodeController } from "@appication/controllers/ClientController/GenerateClientCodeController";
 import { ListClientController } from "@appication/controllers/ClientController/ListClientController";
 import { validateClientFields } from "@domain/middlewares/ClientMiddleware";
+import { validationErrorHandler } from "@shared/utils/ValidationErrorHandler";
 import { Router } from "express";
 
 const clientRouter = Router();
 
 clientRouter.post(
   "/",
-  [...validateClientFields()],
+  [...validateClientFields(), validationErrorHandler],
   new CreateClientController().handle
 );
 clientRouter.get("/client-code/:clientName", new GenerateClientCodeController().handle);

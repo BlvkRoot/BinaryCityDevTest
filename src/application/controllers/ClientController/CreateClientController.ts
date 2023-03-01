@@ -7,7 +7,6 @@ export class CreateClientController {
   public async handle(request: Request, response: Response): Promise<Response> {
     try {
       const clientService = container.resolve(CreateClientService);
-      validationErrorHandler(request, response);
       await clientService.execute(request.body);
 
       return response.status(201).json({

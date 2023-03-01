@@ -9,6 +9,7 @@ import {
   Paper,
   TableBody,
   TablePagination,
+  Link,
 } from "@mui/material";
 import { listContacts } from "../../../utils/contactApiCalls";
 import Spinner from "../../../components/Spinner";
@@ -28,8 +29,8 @@ function ListContact() {
   };
 
   return (
-    <div className="client__list">
-      <h2 style={{ textAlign: "center", marginBottom: 8 }}>Clients</h2>
+    <div className="contact__list">
+      <h2 style={{ textAlign: "center", marginBottom: 8 }}>Contacts</h2>
 
       {isFetching ? (
         <Spinner loading={isFetching} />
@@ -40,32 +41,34 @@ function ListContact() {
               <TableHead className="table-header">
                 <TableRow>
                   <TableCell align="left">Name</TableCell>
-                  <TableCell align="left">Client code</TableCell>
-                  <TableCell align="center">No. of linked contacts </TableCell>
+                  <TableCell align="left">Surname</TableCell>
+                  <TableCell align="left">Email address</TableCell>
+                  <TableCell align="center">No. of linked clients </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {!data ? (
                   <TableRow>
-                    <TableCell colSpan={4}>No client(s) found</TableCell>
+                    <TableCell colSpan={4}>No contact(s) found</TableCell>
                   </TableRow>
                 ) : (
                   data
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((client) => {
+                    .map((contact) => {
                       return (
-                        <Fragment key={client._id}>
+                        <Fragment key={contact._id}>
                           <TableRow
                             sx={{
                               "&:last-child td, &:last-child th": { border: 0 },
                             }}
                           >
-                            <TableCell align="left">{client.name}</TableCell>
+                            <TableCell align="left">{contact.name}</TableCell>
                             <TableCell align="left">
-                              {client.clientCode}
+                              {contact.surname}
                             </TableCell>
+                            <TableCell align="left">{contact.email}</TableCell>
                             <TableCell align="center">
-                              {client.contacts.length}
+                              {contact.clients.length}
                             </TableCell>
                           </TableRow>
                         </Fragment>
@@ -89,6 +92,10 @@ function ListContact() {
               backgroundColor: "#1976d2",
             }}
           />
+
+          <Link href="/create-contact" underline="hover">
+            Create Contact
+          </Link>
         </>
       )}
     </div>

@@ -22,9 +22,9 @@ function Client() {
         navigate("/clients");
       }
     },
-    onError: async (error) => {
-      notify(error);
-    }
+    onError: async ({ response: { data: { errors } } }) => {
+      errors?.forEach(error => notify(error));
+    },
   });
 
   async function handleNameChange(e: ChangeEvent<HTMLInputElement>) {

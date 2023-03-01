@@ -41,7 +41,7 @@ function ContactTabsComponent() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper", width: "80%", height: "50%", borderRadius: 8 }}>
+    <Box sx={{ bgcolor: "background.paper", width: "80%", height: "50%", borderRadius: 8, margin: "0 auto" }}>
       <AppBar position="static">
         <Tabs
           value={value}
