@@ -1,9 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
-import { Tab, Tabs, Typography } from "@mui/material";
-import { useTheme } from "styled-components";
-import Client from "../Client";
+import { Tab, Tabs } from "@mui/material";
+import Contact from "../Contact";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -34,8 +33,7 @@ function a11yProps(index: number) {
   };
 }
 
-function ClientTabsComponent() {
-  const theme = useTheme();
+function ContactTabsComponent() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -58,13 +56,13 @@ function ClientTabsComponent() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Client />
+        <Contact />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        Clients List here
       </TabPanel>
     </Box>
   );
 }
 
-export default ClientTabsComponent;
+export default ContactTabsComponent;

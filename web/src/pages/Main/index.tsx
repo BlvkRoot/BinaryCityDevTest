@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import { Container, TABLE } from "../../styles";
+import Spinner from "../../components/Spinner";
 import TabsComponent from "../ClientTabsComponent";
 
 function Main() {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const getAllTransactions = async () => {
-      const { data } = await api.get("/transactions");
-    };
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
   }, []);
   return (
     <Container>
-      <TabsComponent />
+      <Spinner loading={isLoading} />
+      {!isLoading && <TabsComponent />}
     </Container>
   );
 }

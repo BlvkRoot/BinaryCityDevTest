@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
+import ListClient from './pages/Client/List';
 import Main from './pages/Main';
-import Upload from './pages/Upload';
 
 export default function Router() {
     return (
@@ -10,7 +10,7 @@ export default function Router() {
             <Header/>
             <Routes>
                 <Route path="/" element={<Main />} />
-                <Route path="/upload-file" element={<Upload />} />
+                <Route path="/clients" element={<ListClient />} />
             </Routes>
         </BrowserRouter>
     )
