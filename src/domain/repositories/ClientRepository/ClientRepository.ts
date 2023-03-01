@@ -45,11 +45,20 @@ export class ClientRepository implements IClientRepository {
 
   private generateAlphaCharacters(clientName: string): string {
     const clientNameSplitted = clientName.split(" ");
+    const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // generate random character index
+    const randomCharacterIndex = Math.floor(Math.random() * alphabets.length);
 
     // Case when name is 3+ words separated
     if (clientNameSplitted.length >= 3) {
       const [firstName, middleName, LastName] = clientNameSplitted;
       return `${firstName[0]}${middleName[0]}${LastName[0]}`;
+    }
+
+    // Case when name is 2 words separated
+    if (clientNameSplitted.length == 2) {
+      const [firstName, middleName] = clientNameSplitted;
+      return `${firstName[0]}${middleName[0]}${alphabets[randomCharacterIndex]}`;
     }
 
     // Case when name is 1 word
@@ -59,9 +68,6 @@ export class ClientRepository implements IClientRepository {
 
     // Case when name is less than 3 alpha characters
     if (clientName.length < 3) {
-      const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      // generate random character index
-      const randomCharacterIndex = Math.floor(Math.random() * alphabets.length);
       return `${clientName}${alphabets[randomCharacterIndex]}`;
     }
 
@@ -74,6 +80,10 @@ export class ClientRepository implements IClientRepository {
   }
 
   public list(start: number, end: number): Promise<ClientDTO[] | null> {
-    return ClientModel.find({ }).skip(start).limit(end);
+    return ClientModel.find({}).skip(start).limit(end).sort({ name: "asc" });
+  }
+
+  public findClientByCode(clientCode: string): Promise<ClientDTO | null> {
+    return ClientModel.findOne({ clientCode });
   }
 }

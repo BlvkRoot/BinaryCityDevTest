@@ -18,6 +18,9 @@ export class ContactRepository implements IContactRepository {
   }
 
   public list(start: number, end: number): Promise<ContactDTO[] | null> {
-    return ContactModel.find({ }).skip(start).limit(end);
+    return ContactModel.find({})
+      .skip(start)
+      .limit(end)
+      .sort({ name: "asc", surname: "asc" });
   }
 }

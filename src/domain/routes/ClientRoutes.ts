@@ -11,7 +11,7 @@ clientRouter.post(
   [...validateClientFields()],
   new CreateClientController().handle
 );
-clientRouter.get("/:clientName", new GenerateClientCodeController().handle);
+clientRouter.get("/client-code/:clientName", new GenerateClientCodeController().handle);
 clientRouter.get("/", new ListClientController().handle);
 
 export { clientRouter };
