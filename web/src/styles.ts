@@ -76,12 +76,12 @@ export const Nav = styled.nav`
       margin-left: 10px;
       text-decoration: none;
       color: #dda;
-      border: 1px solid #fff;
+      border: 1px solid #ff7;
       border-radius: 3px
     }
 
     a:hover{
-      background: #dda;
+      background: #fff;
       color: #002;
       transition: 0.5s ease-in-out;
     }

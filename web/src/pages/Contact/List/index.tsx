@@ -38,7 +38,7 @@ function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
 
   return (
     <div className="contact__list">
-      <h2 style={{ textAlign: "center", marginBottom: 8 }}>Contacts</h2>
+      <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2" }}>Contacts</h2>
 
       {isFetching ? (
         <Spinner loading={isFetching} />

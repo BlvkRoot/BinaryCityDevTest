@@ -12,7 +12,7 @@ interface ILoadingProps {
 }
 
 function Spinner({ loading }: ILoadingProps) {
-  let [color, setColor] = useState("#ffffff");
+  let [color, setColor] = useState("#0069B9");
 
   return (
     <div className="sweet-loading">

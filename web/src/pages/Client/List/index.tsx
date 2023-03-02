@@ -33,7 +33,7 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
 
   return (
     <div className="client__list">
-      <h2 style={{ textAlign: "center", marginBottom: 8 }}>Clients</h2>
+      <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2" }}>Clients</h2>
 
       {isFetching ? (
         <Spinner loading={isFetching} />
