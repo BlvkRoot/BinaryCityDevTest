@@ -9,7 +9,7 @@ export const Container = styled.div`
   height: 100%;
 
   h1{
-    color: #970;
+    color: #1976d2;
     margin: 8px;
   }
 `;
@@ -32,7 +32,7 @@ export const Button = styled.button.attrs({
 })`
     background: none;
     border-radius: 6px;
-    border: 2px solid #970;
+    border: 2px solid #1976d2;
     outline: none;
     cursor: pointer;
     font-size: 16px;
@@ -51,11 +51,11 @@ export const Head = styled.header`
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    // background-color: #00a;
+    background-color: #1976d2;
     padding: 18px;
     
     h1{
-        color: #970;
+        color: #fff;
         margin: 8px;
     }
 `;

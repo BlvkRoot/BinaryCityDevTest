@@ -3,35 +3,8 @@ import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import { Tab, Tabs } from "@mui/material";
 import Contact from "../Contact";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ color: "black" }}>{children}</Box>}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
-  };
-}
+import { a11yProps, TabPanel } from "../ClientTabsComponent";
+import ListClient from "../Client/List";
 
 function ContactTabsComponent() {
   const [value, setValue] = React.useState(0);
@@ -41,7 +14,14 @@ function ContactTabsComponent() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper", width: "80%", height: "50%", borderRadius: 8, margin: "0 auto" }}>
+    <Box
+      sx={{
+        bgcolor: "background.paper",
+        width: "80%",
+        borderRadius: 4,
+        margin: "0 auto",
+      }}
+    >
       <AppBar position="static">
         <Tabs
           value={value}
@@ -59,7 +39,7 @@ function ContactTabsComponent() {
         <Contact />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Clients List here
+        <ListClient hideLinkedCountList={true} />
       </TabPanel>
     </Box>
   );

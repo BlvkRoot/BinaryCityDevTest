@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../../services/api";
 import { Container, TABLE } from "../../styles";
 import Spinner from "../../components/Spinner";
 import TabsComponent from "../ClientTabsComponent";
@@ -10,7 +9,7 @@ function Main() {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 1000);
   }, []);
   return (
     <Container>

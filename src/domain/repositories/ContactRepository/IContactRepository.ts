@@ -6,4 +6,5 @@ export interface IContactRepository {
   getContactById(contactId: ObjectId): Promise<ContactDTO | null>;
   findContactByEmail(email: string): Promise<ContactDTO | null>;
   list(start: number, end: number): Promise<ContactDTO[] | null>;
+  unlinkClientsById(contactId: ObjectId): void;
 }

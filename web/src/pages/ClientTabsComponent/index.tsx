@@ -1,17 +1,17 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
-import { Tab, Tabs, Typography } from "@mui/material";
-import { useTheme } from "styled-components";
+import { Tab, Tabs } from "@mui/material";
 import Client from "../Client";
+import ListContact from "../Contact/List";
 
-interface TabPanelProps {
+export interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
 
-function TabPanel(props: TabPanelProps) {
+export function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -27,7 +27,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
+export function a11yProps(index: number) {
   return {
     id: `full-width-tab-${index}`,
     "aria-controls": `full-width-tabpanel-${index}`,
@@ -42,7 +42,14 @@ function ClientTabsComponent() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper", width: "80%", height: "50%", borderRadius: 8 }}>
+    <Box
+      sx={{
+        bgcolor: "background.paper",
+        width: "80%",
+        height: "50%",
+        borderRadius: 4,
+      }}
+    >
       <AppBar position="static">
         <Tabs
           value={value}
@@ -60,7 +67,7 @@ function ClientTabsComponent() {
         <Client />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <ListContact hideLinkedCountList={true} />
       </TabPanel>
     </Box>
   );

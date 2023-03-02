@@ -12,8 +12,12 @@ import {
 } from "@mui/material";
 import { listClients } from "../../../utils/clientApiCalls";
 import Spinner from "../../../components/Spinner";
+import CreateButton from "../../../components/CreateButton";
+export interface IShowLinkedCount {
+  hideLinkedCountList?: boolean;
+}
 
-function ListClient() {
+function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
   const { data, isFetching } = useQuery(["clients"], listClients);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -41,7 +45,11 @@ function ListClient() {
                 <TableRow>
                   <TableCell align="left">Name</TableCell>
                   <TableCell align="left">Client code</TableCell>
-                  <TableCell align="center">No. of linked contacts </TableCell>
+                  {hideLinkedCountList ? (
+                    <TableCell align="center">Action</TableCell>
+                  ) : (
+                    <TableCell align="center">No. of linked contacts</TableCell>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -64,9 +72,15 @@ function ListClient() {
                             <TableCell align="left">
                               {client.clientCode}
                             </TableCell>
-                            <TableCell align="center">
-                              {client.contacts.length}
-                            </TableCell>
+                            {hideLinkedCountList ? (
+                              <TableCell align="center">
+                                To add link here{" "}
+                              </TableCell>
+                            ) : (
+                              <TableCell align="center">
+                                {client.contacts.length}
+                              </TableCell>
+                            )}
                           </TableRow>
                         </Fragment>
                       );
@@ -89,6 +103,8 @@ function ListClient() {
               backgroundColor: "#1976d2",
             }}
           />
+
+          <CreateButton link="/" title="Create Client" />
         </>
       )}
     </div>

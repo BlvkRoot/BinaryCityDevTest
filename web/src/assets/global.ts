@@ -13,7 +13,7 @@ html, body, #root {
 }
 
 body{
-    background-color: #002;
+    background-color: #ccc;
     color: #fff;
     -webkit-font-smoothing: antialiased !important;
 }

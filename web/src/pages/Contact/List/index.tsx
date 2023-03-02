@@ -13,8 +13,11 @@ import {
 } from "@mui/material";
 import { listContacts } from "../../../utils/contactApiCalls";
 import Spinner from "../../../components/Spinner";
+import CreateButton from "../../../components/CreateButton";
+import { IShowLinkedCount } from "../../Client/List";
+import { api } from "../../../services/api";
 
-function ListContact() {
+function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
   const { data, isFetching } = useQuery(["contacts"], listContacts);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -26,6 +29,11 @@ function ListContact() {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleUnlinkClient = async (e) => {
+    const clientId = e.target.getAttribute("data-client-id");
+    await api.put(`/contacts/unlink/${clientId}`);
   };
 
   return (
@@ -40,10 +48,22 @@ function ListContact() {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead className="table-header">
                 <TableRow>
-                  <TableCell align="left">Name</TableCell>
-                  <TableCell align="left">Surname</TableCell>
-                  <TableCell align="left">Email address</TableCell>
-                  <TableCell align="center">No. of linked clients </TableCell>
+                  <TableCell align="left">
+                    {!hideLinkedCountList ? `Name` : `Contact Full Name`}
+                  </TableCell>
+                  {!hideLinkedCountList && (
+                    <TableCell align="left">Surname</TableCell>
+                  )}
+                  <TableCell align="left">
+                    {!hideLinkedCountList
+                      ? `Email address`
+                      : `Contact Email address`}
+                  </TableCell>
+                  {hideLinkedCountList ? (
+                    <TableCell align="center">Action</TableCell>
+                  ) : (
+                    <TableCell align="center">No. of linked clients</TableCell>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -62,14 +82,39 @@ function ListContact() {
                               "&:last-child td, &:last-child th": { border: 0 },
                             }}
                           >
-                            <TableCell align="left">{contact.name}</TableCell>
                             <TableCell align="left">
-                              {contact.surname}
+                              {!hideLinkedCountList
+                                ? contact.name
+                                : `${contact.surname} ${contact.name}`}
                             </TableCell>
+                            {!hideLinkedCountList && (
+                              <TableCell align="left">
+                                {contact.surname}
+                              </TableCell>
+                            )}
                             <TableCell align="left">{contact.email}</TableCell>
-                            <TableCell align="center">
-                              {contact.clients.length}
-                            </TableCell>
+                            {hideLinkedCountList ? (
+                              <TableCell align="center">
+                                {contact.clients.length > 0 ? (
+                                  <a
+                                    onClick={handleUnlinkClient}
+                                    style={{
+                                      textDecoration: "underline",
+                                      cursor: "pointer",
+                                    }}
+                                    data-client-id={contact._id}
+                                  >
+                                    Unlink
+                                  </a>
+                                ) : (
+                                  `No client linked`
+                                )}
+                              </TableCell>
+                            ) : (
+                              <TableCell align="center">
+                                {contact.clients.length}
+                              </TableCell>
+                            )}
                           </TableRow>
                         </Fragment>
                       );
@@ -93,9 +138,7 @@ function ListContact() {
             }}
           />
 
-          <Link href="/create-contact" underline="hover">
-            Create Contact
-          </Link>
+          <CreateButton link="/create-contact" title="Create Contact" />
         </>
       )}
     </div>

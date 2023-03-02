@@ -23,4 +23,15 @@ export class ContactRepository implements IContactRepository {
       .limit(end)
       .sort({ name: "asc", surname: "asc" });
   }
+
+  public unlinkClientsById(contactId: ObjectId): void {
+    ContactModel.updateOne(
+      { _id: contactId },
+      {
+        $set: {
+          clients: [],
+        },
+      }
+    );
+  }
 }

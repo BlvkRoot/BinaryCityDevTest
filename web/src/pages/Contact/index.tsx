@@ -30,7 +30,7 @@ function Contact() {
   return (
     <>
       <Form onSubmit={(e) => e.preventDefault()}>
-        <h1>Contact Form</h1>
+        <h1 style={{ color: "#970"}}>Contact Form</h1>
         <TextField
           id="standard-basic"
           label="Name"
