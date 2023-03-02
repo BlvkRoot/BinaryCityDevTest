@@ -32,7 +32,7 @@ function ContactTabsComponent() {
           aria-label="full width tabs example"
         >
           <Tab label="General" {...a11yProps(0)} />
-          <Tab label="Contacts" {...a11yProps(1)} />
+          <Tab label="Clients" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>

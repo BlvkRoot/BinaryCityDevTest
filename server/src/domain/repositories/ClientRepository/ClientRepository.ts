@@ -86,4 +86,18 @@ export class ClientRepository implements IClientRepository {
   public findClientByCode(clientCode: string): Promise<ClientDTO | null> {
     return ClientModel.findOne({ clientCode });
   }
+
+  public async unlinkContactsById(
+    clientId: ObjectId,
+    newLinkedContacts: ObjectId[]
+  ): Promise<void> {
+    await ClientModel.updateOne(
+      { _id: clientId },
+      {
+        $set: {
+          contacts: newLinkedContacts,
+        },
+      }
+    );
+  }
 }

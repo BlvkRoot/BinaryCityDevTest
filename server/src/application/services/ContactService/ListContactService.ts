@@ -21,18 +21,6 @@ export class ListContactService {
       startPosition,
       endPosition
     );
-    for (const contact of contacts) {
-      if (contact.clients) {
-        contact.clients = (await Promise.all(
-          contact.clients.map(
-            async (clientId) =>
-              await this.clientRepository.getClientById(
-                clientId as unknown as ObjectId
-              )
-          )
-        )) as ClientDTO[];
-      }
-    }
     return contacts;
   }
 }

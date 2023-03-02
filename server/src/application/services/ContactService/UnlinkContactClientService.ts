@@ -8,7 +8,10 @@ export class UnlinkContactClientService {
     @inject("ContactRepository")
     protected readonly contactRepository: IContactRepository
   ) {}
-  public async execute(id: string): Promise<void> {
-    this.contactRepository.unlinkClientsById(id as unknown as ObjectId);
+  public async execute(id: string, clientId: string): Promise<void> {
+    const contact = await this.contactRepository.getContactById(id as unknown as ObjectId);
+    const newClientsLink = contact?.clients?.filter(client => client != clientId);
+
+    this.contactRepository.unlinkClientsById(id as unknown as ObjectId, newClientsLink);
   }
 }

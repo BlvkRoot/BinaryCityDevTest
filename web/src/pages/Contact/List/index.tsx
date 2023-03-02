@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useQuery } from "react-query";
 import {
   TableContainer,
@@ -21,6 +21,7 @@ function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
   const { data, isFetching } = useQuery(["contacts"], listContacts);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [linkedContacts, setLinkedContacts] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -31,14 +32,22 @@ function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
     setPage(0);
   };
 
+  useEffect(() => {
+    if (hideLinkedCountList)
+      setLinkedContacts(data.filter((contact) => contact?.clients?.length > 0));
+  }, [setLinkedContacts]);
+
   const handleUnlinkClient = async (e) => {
+    const contactId = e.target.getAttribute("data-contact-id");
     const clientId = e.target.getAttribute("data-client-id");
-    await api.put(`/contacts/unlink/${clientId}`);
+    await api.put(`/contacts/unlink/${contactId}/${clientId}`);
   };
 
   return (
     <div className="contact__list">
-      <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2" }}>Contacts</h2>
+      <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2" }}>
+        Contacts
+      </h2>
 
       {isFetching ? (
         <Spinner loading={isFetching} />
@@ -71,7 +80,7 @@ function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
                   <TableRow>
                     <TableCell colSpan={4}>No contact(s) found</TableCell>
                   </TableRow>
-                ) : (
+                ) : !hideLinkedCountList ? (
                   data
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((contact) => {
@@ -82,40 +91,52 @@ function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
                               "&:last-child td, &:last-child th": { border: 0 },
                             }}
                           >
+                            <TableCell align="left">{contact.name}</TableCell>
                             <TableCell align="left">
-                              {!hideLinkedCountList
-                                ? contact.name
-                                : `${contact.surname} ${contact.name}`}
+                              {contact.surname}
                             </TableCell>
-                            {!hideLinkedCountList && (
-                              <TableCell align="left">
-                                {contact.surname}
-                              </TableCell>
-                            )}
                             <TableCell align="left">{contact.email}</TableCell>
-                            {hideLinkedCountList ? (
-                              <TableCell align="center">
-                                {contact.clients.length > 0 ? (
-                                  <a
-                                    onClick={handleUnlinkClient}
-                                    style={{
-                                      textDecoration: "underline",
-                                      cursor: "pointer",
-                                    }}
-                                    data-client-id={contact._id}
-                                  >
-                                    Unlink
-                                  </a>
-                                ) : (
-                                  `No client linked`
-                                )}
-                              </TableCell>
-                            ) : (
-                              <TableCell align="center">
-                                {contact.clients.length}
-                              </TableCell>
-                            )}
+                            <TableCell align="center">
+                              {contact.clients.length}
+                            </TableCell>
                           </TableRow>
+                        </Fragment>
+                      );
+                    })
+                ) : (
+                  linkedContacts
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((contact, index) => {
+                      return (
+                        <Fragment key={contact._id + Math.random()}>
+                          {contact.clients?.map((clientId) => (
+                            <TableRow
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                              key={contact._id + Math.random()}
+                            >
+                              <TableCell align="left">{`${contact.surname} ${contact.name}`}</TableCell>
+                              <TableCell align="left">
+                                {contact.email}
+                              </TableCell>
+                              <TableCell align="center">
+                                <a
+                                  onClick={handleUnlinkClient}
+                                  style={{
+                                    textDecoration: "underline",
+                                    cursor: "pointer",
+                                  }}
+                                  data-contact-id={contact._id}
+                                  data-client-id={clientId}
+                                >
+                                  Unlink
+                                </a>
+                              </TableCell>
+                            </TableRow>
+                          ))}
                         </Fragment>
                       );
                     })
@@ -127,7 +148,7 @@ function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 15]}
             component="div"
-            count={data.length}
+            count={!hideLinkedCountList ? data.length : linkedContacts.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

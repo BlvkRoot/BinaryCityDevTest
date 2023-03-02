@@ -5,12 +5,12 @@ import { container } from "tsyringe";
 export class UnlinkContactClientController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const contactService = container.resolve(UnlinkContactClientService);
-    await contactService.execute(request.params.id);
-    console.log(request.params.id);
+    
+    await contactService.execute(request.params.id, request.params.clientId);
     
     return response.status(200).json({
       success: true,
-      message: "Clients unlinked successfully",
+      message: "Client unlinked successfully",
     });
   }
 }

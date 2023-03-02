@@ -15,6 +15,6 @@ contactRouter.post(
 );
 contactRouter.get("/:id", new ShowContactController().handle);
 contactRouter.get("/", new ListContactController().handle);
-contactRouter.put("/unlink/:id", new UnlinkContactClientController().handle);
+contactRouter.put("/unlink/:id/:clientId", new UnlinkContactClientController().handle);
 
 export { contactRouter };

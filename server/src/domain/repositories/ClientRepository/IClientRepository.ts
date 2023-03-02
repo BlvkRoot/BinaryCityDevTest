@@ -8,4 +8,5 @@ export interface IClientRepository {
   getClientById(clientId: ObjectId): Promise<ClientDTO | null>;
   list(start: number, end: number): Promise<ClientDTO[] | null>;
   findClientByCode(clientCode: string): Promise<ClientDTO | null>;
+  unlinkContactsById(clientId: ObjectId, newLinkedContacts: ObjectId[]): Promise<void>;
 }

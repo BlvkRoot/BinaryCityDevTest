@@ -24,12 +24,15 @@ export class ContactRepository implements IContactRepository {
       .sort({ name: "asc", surname: "asc" });
   }
 
-  public unlinkClientsById(contactId: ObjectId): void {
-    ContactModel.updateOne(
+  public async unlinkClientsById(
+    contactId: ObjectId,
+    newLinkedClients: ObjectId[]
+  ): Promise<void> {
+    await ContactModel.updateOne(
       { _id: contactId },
       {
         $set: {
-          clients: [],
+          clients: newLinkedClients,
         },
       }
     );
