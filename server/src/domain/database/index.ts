@@ -4,7 +4,11 @@ const uri =
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWD}@binarycitycluster.2qjxzq7.mongodb.net/?retryWrites=true&w=majority`;
 
 const dbConnection = async () => {
-    await mongoose.connect(uri);
+    try {
+      await mongoose.connect(uri);  
+    } catch (error) {
+      console.log(error);
+    }
 };
 
 dbConnection();

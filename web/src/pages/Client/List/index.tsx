@@ -13,6 +13,7 @@ import {
 import { listClients } from "../../../utils/clientApiCalls";
 import Spinner from "../../../components/Spinner";
 import CreateButton from "../../../components/CreateButton";
+import { api } from "../../../services/api";
 export interface IShowLinkedCount {
   hideLinkedCountList?: boolean;
 }
@@ -36,6 +37,12 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
     if (hideLinkedCountList)
       setLinkedClients(data.filter((client) => client?.contacts?.length > 0));
   }, [setLinkedClients]);
+
+  const handleUnlinkContact = async (e) => {
+    const clientId = e.target.getAttribute("data-client-id");
+    const contactId = e.target.getAttribute("data-contact-id");
+    await api.put(`/clients/unlink/${clientId}/${contactId}`);
+  };
 
   return (
     <div className="client__list">
@@ -94,7 +101,7 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
                     .map((client, index) => {
                       return (
                         <Fragment key={client._id + Math.random()}>
-                          {client.contacts?.map((contact) => (
+                          {client.contacts?.map((contactId) => (
                             <TableRow
                               sx={{
                                 "&:last-child td, &:last-child th": {
@@ -108,7 +115,17 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
                                 {client.clientCode}
                               </TableCell>
                               <TableCell align="center">
-                                To add link here{" "}
+                              <a
+                                  onClick={handleUnlinkContact}
+                                  style={{
+                                    textDecoration: "underline",
+                                    cursor: "pointer",
+                                  }}
+                                  data-client-id={client._id}
+                                  data-contact-id={contactId}
+                                >
+                                  Unlink
+                                </a>
                               </TableCell>
                             </TableRow>
                           ))}
