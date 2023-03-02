@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useQuery } from "react-query";
 import {
   TableContainer,
@@ -21,6 +21,7 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
   const { data, isFetching } = useQuery(["clients"], listClients);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [linkedClients, setLinkedClients] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -31,9 +32,16 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
     setPage(0);
   };
 
+  useEffect(() => {
+    if (hideLinkedCountList)
+      setLinkedClients(data.filter((client) => client?.contacts?.length > 0));
+  }, [setLinkedClients]);
+
   return (
     <div className="client__list">
-      <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2" }}>Clients</h2>
+      <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2" }}>
+        Clients
+      </h2>
 
       {isFetching ? (
         <Spinner loading={isFetching} />
@@ -57,7 +65,7 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
                   <TableRow>
                     <TableCell colSpan={4}>No client(s) found</TableCell>
                   </TableRow>
-                ) : (
+                ) : !hideLinkedCountList ? (
                   data
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((client) => {
@@ -72,16 +80,38 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
                             <TableCell align="left">
                               {client.clientCode}
                             </TableCell>
-                            {hideLinkedCountList ? (
+
+                            <TableCell align="center">
+                              {client.contacts.length}
+                            </TableCell>
+                          </TableRow>
+                        </Fragment>
+                      );
+                    })
+                ) : (
+                  linkedClients
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((client, index) => {
+                      return (
+                        <Fragment key={client._id + Math.random()}>
+                          {client.contacts?.map((contact) => (
+                            <TableRow
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                              key={client._id + Math.random()}
+                            >
+                              <TableCell align="left">{client.name}</TableCell>
+                              <TableCell align="left">
+                                {client.clientCode}
+                              </TableCell>
                               <TableCell align="center">
                                 To add link here{" "}
                               </TableCell>
-                            ) : (
-                              <TableCell align="center">
-                                {client.contacts.length}
-                              </TableCell>
-                            )}
-                          </TableRow>
+                            </TableRow>
+                          ))}
                         </Fragment>
                       );
                     })
@@ -93,7 +123,7 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 15]}
             component="div"
-            count={data.length}
+            count={!hideLinkedCountList ? data.length : linkedClients.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
