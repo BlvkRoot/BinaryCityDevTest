@@ -7,11 +7,12 @@ and link them to Contacts.
 
 ### How to run the server
 
-* First run `npm install`
-* Second `create .env file and add the following variables:`
+* First `cd to ./server`
+* Second run `npm install`
+* Third `create .env file and add the following variables:`
   * DB_USER=
   * DB_PASSWD=
-* Third run `npm run dev` to start the server
+* Fourth run `npm run dev` to start the server
 
 ### How to run the frontend
 
