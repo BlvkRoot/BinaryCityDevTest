@@ -26,9 +26,9 @@ export class CreateClientService {
     clientData.contacts = (
       await Promise.all(
         clientData.contactIds?.map(
-          async (contactId) =>
+          async (contact) =>
             await this.contactRepository.getContactById(
-              contactId as unknown as ObjectId
+              contact.value as unknown as ObjectId
             )
         )
       )

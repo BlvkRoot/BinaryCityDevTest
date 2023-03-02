@@ -126,3 +126,7 @@ export const TABLE = styled.table`
       }
     }
 `;
+
+export const FormDiv = styled.div `
+    width: 70%;
+`;

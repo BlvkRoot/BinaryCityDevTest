@@ -1,18 +1,37 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
-import { Button, Form } from "../../styles";
+import { Button, Form, FormDiv } from "../../styles";
 import TextField from "@mui/material/TextField";
 import { api } from "../../services/api";
 import { createClient } from "../../utils/clientApiCalls";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { notify } from "../../utils/notification";
+import MultiSelect from "../../components/MultiSelect";
+import {
+  Option,
+  MultiValue,
+  animatedComponents,
+  IOptions,
+} from "../../components/MultiSelectOption";
+import { listContacts } from "../../utils/contactApiCalls";
 
 function Client() {
+  const navigate = useNavigate();
+  const { data, isFetching } = useQuery(["contacts"], listContacts);
   const [clientName, setClientName] = useState("");
   const [clientCode, setClientCode] = useState("");
   const [contactIds, setContactIds] = useState([]);
+  const [optionSelected, setOptionSelected] = useState("");
+  const [options, setOptions] = useState<IOptions[]>([]);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    data?.map((contact) => {
+      setOptions((oldOptions) => [
+        ...oldOptions,
+        { value: contact._id, label: contact.name },
+      ]);
+    });
+  }, [data]);
 
   const { isLoading, isSuccess, isError, mutate } = useMutation(createClient, {
     onSuccess: async ({ data: { message, success } }) => {
@@ -22,8 +41,12 @@ function Client() {
         navigate("/clients");
       }
     },
-    onError: async ({ response: { data: { errors } } }) => {
-      errors?.forEach(error => notify(error));
+    onError: async ({
+      response: {
+        data: { errors },
+      },
+    }) => {
+      errors?.forEach((error) => notify(error));
     },
   });
 
@@ -42,25 +65,48 @@ function Client() {
     }
   }
 
+  function handleSelectChange(selected) {
+    setOptionSelected(selected);
+    setContactIds(selected);
+  }
+
   return (
     <Form onSubmit={(e) => e.preventDefault()}>
       <h1>Client Form</h1>
-      <TextField
-        id="standard-basic"
-        label="Name"
-        variant="outlined"
-        required={true}
-        onChange={handleNameChange}
-        value={clientName}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Client Code"
-        variant="outlined"
-        disabled={true}
-        required={true}
-        value={clientCode}
-      />
+      <FormDiv>
+        <TextField
+          id="standard-basic"
+          label="Name"
+          variant="outlined"
+          required={true}
+          onChange={handleNameChange}
+          fullWidth={true}
+          value={clientName}
+        />
+      </FormDiv>
+      <FormDiv>
+        <TextField
+          id="outlined-basic"
+          label="Client Code"
+          variant="outlined"
+          disabled={true}
+          required={true}
+          fullWidth={true}
+          value={clientCode}
+        />
+      </FormDiv>
+      <FormDiv>
+        <MultiSelect
+          options={options}
+          isMulti
+          closeMenuOnSelect={false}
+          hideSelectedOptions={false}
+          components={{ Option, MultiValue, animatedComponents }}
+          onChange={handleSelectChange}
+          allowSelectAll={true}
+          value={optionSelected}
+        />
+      </FormDiv>
       <Button
         onClick={() => {
           mutate({

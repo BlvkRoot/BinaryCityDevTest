@@ -21,14 +21,14 @@ export class CreateContactService {
 
     if (contactExists)
       throw new ErrorsApp(`Contact ${contactData.email} already exists`);
-
+    
     // link clients to contact if any
     contactData.clients = (
       await Promise.all(
         contactData.clientIds?.map(
-          async (clientId) =>
+          async (client) =>
             await this.clientRepository.getClientById(
-              clientId as unknown as ObjectId
+              client.value as unknown as ObjectId
             )
         )
       )
