@@ -23,12 +23,14 @@ function Contact() {
   const [clientIds, setClientIds] = useState([]);
   const [optionSelected, setOptionSelected] = useState("");
   const [options, setOptions] = useState<IOptions[]>([]);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const { isLoading, isSuccess, isError, mutate } = useMutation(createContact, {
     onSuccess: async ({ data: { message, success } }) => {
       // Validate if success is true
       if (success) {
         notify(message);
+        setIsDisabled(false);
         navigate("/contacts");
       }
     },
@@ -38,6 +40,7 @@ function Contact() {
       },
     }) => {
       errors?.forEach((error) => notify(error));
+      setIsDisabled(false);
     },
   });
 
@@ -102,6 +105,7 @@ function Contact() {
             components={{ Option, MultiValue, animatedComponents }}
             onChange={handleSelectChange}
             allowSelectAll={true}
+            placeholder={`Select Client(s) to link`}
             value={optionSelected}
           />
         </FormDiv>
@@ -114,6 +118,7 @@ function Contact() {
               clientIds,
             });
           }}
+          disabled={isDisabled}
         >
           Save
         </Button>

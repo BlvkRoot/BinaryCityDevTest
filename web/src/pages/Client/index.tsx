@@ -23,6 +23,7 @@ function Client() {
   const [contactIds, setContactIds] = useState([]);
   const [optionSelected, setOptionSelected] = useState("");
   const [options, setOptions] = useState<IOptions[]>([]);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     data?.map((contact) => {
@@ -37,6 +38,7 @@ function Client() {
     onSuccess: async ({ data: { message, success } }) => {
       // Validate if success is true
       if (success) {
+        setIsDisabled(false);
         notify(message);
         navigate("/clients");
       }
@@ -47,6 +49,7 @@ function Client() {
       },
     }) => {
       errors?.forEach((error) => notify(error));
+      setIsDisabled(false);
     },
   });
 
@@ -104,17 +107,20 @@ function Client() {
           components={{ Option, MultiValue, animatedComponents }}
           onChange={handleSelectChange}
           allowSelectAll={true}
+          placeholder={`Select Contact(s) to link`}
           value={optionSelected}
         />
       </FormDiv>
       <Button
         onClick={() => {
+          setIsDisabled(true);
           mutate({
             name: clientName,
             clientCode,
             contactIds,
           });
         }}
+        disabled={isDisabled}
       >
         Save
       </Button>
