@@ -14,6 +14,8 @@ import { listClients } from "../../../utils/clientApiCalls";
 import Spinner from "../../../components/Spinner";
 import CreateButton from "../../../components/CreateButton";
 import { api } from "../../../services/api";
+import { notify } from "../../../utils/notification";
+import { useNavigate } from "react-router-dom";
 export interface IShowLinkedCount {
   hideLinkedCountList?: boolean;
 }
@@ -23,6 +25,7 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [linkedClients, setLinkedClients] = useState([]);
+  const navigation = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -41,7 +44,11 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
   const handleUnlinkContact = async (e) => {
     const clientId = e.target.getAttribute("data-client-id");
     const contactId = e.target.getAttribute("data-contact-id");
-    await api.put(`/clients/unlink/${clientId}/${contactId}`);
+    const { data } = await api.put(`/clients/unlink/${clientId}/${contactId}`);
+    if (data.success) {
+      notify(data.message);
+      navigation("/");
+    }
   };
 
   return (
@@ -115,7 +122,7 @@ function ListClient({ hideLinkedCountList }: IShowLinkedCount) {
                                 {client.clientCode}
                               </TableCell>
                               <TableCell align="center">
-                              <a
+                                <a
                                   onClick={handleUnlinkContact}
                                   style={{
                                     textDecoration: "underline",

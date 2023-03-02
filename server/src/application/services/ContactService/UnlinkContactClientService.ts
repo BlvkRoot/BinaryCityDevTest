@@ -10,7 +10,8 @@ export class UnlinkContactClientService {
   ) {}
   public async execute(id: string, clientId: string): Promise<void> {
     const contact = await this.contactRepository.getContactById(id as unknown as ObjectId);
-    const newClientsLink = contact?.clients?.filter(client => client != clientId);
+    let newClientsLink = contact?.clients?.filter(client => client != clientId);
+    newClientsLink = newClientsLink?.filter(client => !!client);
 
     this.contactRepository.unlinkClientsById(id as unknown as ObjectId, newClientsLink);
   }

@@ -16,12 +16,15 @@ import Spinner from "../../../components/Spinner";
 import CreateButton from "../../../components/CreateButton";
 import { IShowLinkedCount } from "../../Client/List";
 import { api } from "../../../services/api";
+import { notify } from "../../../utils/notification";
+import { useNavigate } from "react-router-dom";
 
 function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
   const { data, isFetching } = useQuery(["contacts"], listContacts);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [linkedContacts, setLinkedContacts] = useState([]);
+  const navigation = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -40,7 +43,11 @@ function ListContact({ hideLinkedCountList }: IShowLinkedCount) {
   const handleUnlinkClient = async (e) => {
     const contactId = e.target.getAttribute("data-contact-id");
     const clientId = e.target.getAttribute("data-client-id");
-    await api.put(`/contacts/unlink/${contactId}/${clientId}`);
+    const { data } = await api.put(`/contacts/unlink/${contactId}/${clientId}`);
+    if (data.success) {
+      notify(data.message);
+      navigation("/create-contact");
+    }
   };
 
   return (

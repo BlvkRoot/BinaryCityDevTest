@@ -91,7 +91,6 @@ export class ClientRepository implements IClientRepository {
     clientId: ObjectId,
     newLinkedContacts: ObjectId[]
   ): Promise<void> {
-    console.log(clientId, newLinkedContacts);
     await ClientModel.updateOne(
       { _id: clientId },
       {
