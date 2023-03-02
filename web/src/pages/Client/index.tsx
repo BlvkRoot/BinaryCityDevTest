@@ -55,16 +55,16 @@ function Client() {
 
   async function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
     try {
-      const name = e.target.value;
+      let name = e.target.value;
       setClientName(name);
-
+      name = name.replace(/\//gi, "");
       // Only set client code if name is provided and lenght is greater or equal 2
       if (name.trim() !== "" && name.length >= 2) {
         const { data } = await api.get(`/clients/client-code/${name}`);
         setClientCode(data.clientCode);
       }
     } catch (error) {
-      notify(`Something went wrong!`);
+      error.response?.data?.errors?.map((message) => notify(`${message}`));
     }
   }
 
