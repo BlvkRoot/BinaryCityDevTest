@@ -5,6 +5,14 @@ This is a test given to me by BinaryCity to develop an application which creates
 and link them to Contacts.
 ```
 
+### How to run both using DOCKER
+
+* First ensure Docker is installed on your machine and running
+* Second run the following command `docker-compose up -d` to start containers in background
+  This might take some time and download a couple of stuff for the first time 😉, so be patient
+* Third run the following command `docker ps` to ensure the containers are up and running
+* Finnally you can open the browser and access `http://localhost:4000` 😎 HAVE FUN TESTING 🚀🚀🚀
+
 ### How to run the server
 
 * First `cd to ./server`

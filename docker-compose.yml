@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  api:
+    image: hvcker8t/binarycitydevapi:latest
+    build: ./server
+    ports:
+      - "4444:4444"
+    volumes:
+        - ./server:/server
+  web:
+    image: hvcker8t/binarycitydevweb:latest
+    build: ./web
+    container_name: bcity_frontend
+    ports:
+      - '4000:4000'
+    depends_on:
+      - "api"
+    stdin_open: true
+    tty: true
+volumes:
+  data:
+    driver: local
