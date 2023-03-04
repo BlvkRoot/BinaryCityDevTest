@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /usr/server/src
 COPY package*.json .
 RUN npm install
 COPY . .
