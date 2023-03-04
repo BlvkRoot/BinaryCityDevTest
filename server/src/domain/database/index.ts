@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
 
-const uri =
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWD}@binarycitycluster.2qjxzq7.mongodb.net/?retryWrites=true&w=majority`;
-
 const dbConnection = async () => {
     try {
-      await mongoose.connect(uri);  
+      await mongoose.connect(String(process.env.DATABASE_URL));  
     } catch (error) {
       console.log(error);
     }
