@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/domain/server.ts",
-    "start": "node dist/domain/server.js",
+    "start": "npm run build && node dist/domain/server.js",
     "build": "tsup src"
   },
   "keywords": [],
